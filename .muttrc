@@ -1,0 +1,93 @@
+set imap_user = "christoph.martel@gmail.com"
+set imap_pass = "PASSWORD"
+
+#set folder = "imaps://imap.gmail.com:993"
+set folder = "imaps://imap.googlemail.com:993"
+set spoolfile = "+INBOX"
+set postponed ="+[Gmail]/Entwürfe"
+#set trash = "imaps://imap.gmail.com/[Gmail]/Trash"
+#set smtp_url = smtps://christoph.martel@gmail.com:PASSWORD@smtp.gmail.com
+set smtp_url = smtps://christoph.martel@gmail.com:PASSWORD@smtp.googlemail.com
+set ssl_force_tls = yes
+
+set markers=no # don't put '+' at the beginning of wrapped lines
+set pager_index_lines= 5 # how large is the index window?
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+
+bind editor <space> noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=[Gmail]/Alle Nachrichten<enter>" "Go to all mail"
+macro index gs "<change-folder>=[Gmail]/Gesendet<enter>" "Go to Sent Mail"
+macro index gd "<change-folder>=[Gmail]/Entwürfe<enter>" "Go to drafts"
+macro index gA "s=[Gmail]/Alle Nachrichten"
+macro index gS "s=[Gmail]/Markiert"
+# use urlview package
+macro index \cb |urlview\n
+macro pager \cb |urlview\n
+
+set move = no  #Stop asking to "move read messages to mbox"!
+set imap_keepalive = 900
+unset imap_passive
+
+set header_cache =~/.mutt/cache/headers
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+set realname="Christoph Martel"
+set signature=~/.mutt/signature
+set from="christoph.martel@gmail.com"
+set hostname="gmail.com"
+set mail_check=60
+set editor="emacs -nw --no-splash"
+set quit=yes
+set edit_headers=no
+set fast_reply=yes
+set query_command="abook --mutt-query '%s'"
+auto_view application/octet-stream
+my_hdr X-PGP-Key: http://www.cmartel.de/res/pubkey.asc
+set copy=no		#save copy of outgoing mail
+set hidden_host       # hide host details
+
+# forwarding options for multipart messages
+set mime_forward=yes
+set mime_forward_rest=yes
+
+#set attribution="* %n <%a> [%{%Y-%m-%d %H:%M:%S %Z}]:\n"	# attrinution line
+set nomarkers 		# no wrapping markers
+set nobeep
+
+set index_format="%Z %d %-15.15L (%4l) %s"
+set date_format="!%a, %d %b %k:%M"
+
+# gnupgg settings
+source ~/.mutt/gpg.rc
+set pgp_autosign=yes
+set pgp_autoencrypt=no
+set pgp_sign_as=0x299B221A
+set pgp_replyencrypt=yes
+set pgp_timeout=3600
+#set pgp_good_sign="^gpg: Good signature from"
+set pgp_replysign=yes
+set pgp_verify_sig=yes
+set pgp_strict_enc
+unset pgp_long_ids
+set pgp_auto_decode=yes
+set alias_file=~/.mutt/aliases
+set mailcap_path=~/.mutt/mailcap:/usr/local/etc/mailcap:/etc/mailcap
+
+# source files
+source ~/.mutt/colors # define colors
+source ~/.mutt/aliases
+# HTML is last option
+alternative_order text/enriched text/plain text/html
+
+# show version number
+push <show-version>
+
+#print settings
+set print=ask-yes
+set print_command="enscript -B -Email -q --margins=72:72:50:36"
+set print_split=yes
+
+			  

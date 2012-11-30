@@ -1,0 +1,71 @@
+# mailcap file for usage with mutt. Adapted from the one found at:
+# http://www.xpto.org/~japc/ on 22042004.
+#
+# Id: mutt.mailcap,v 1.3 2004/08/12 08:43:50 wjmb Exp $*
+
+application/octet-stream        ; mutt.octet.filter %s                          ; copiousoutput
+application/ghostview           ; /usr/X11R6/bin/gv %s                          ; copiousoutput
+application/msword              ; /usr/bin/antiword %s                          ; copiousoutput
+application/pdf                 ; pdftotext %s -                                ; copiousoutput
+application/postscript          ; /usr/X11R6/bin/gv %s                          ; copiousoutput
+application/x-bzip2             ; /usr/bin/bzip2 -dc %s                         ; copiousoutput
+application/x-cpio              ; cpio -tvF --quiet %s                          ; copiousoutput
+application/x-csh               ; cat %s                                        ; copiousoutput
+application/x-gtar              ; tar tvf %s                                    ; copiousoutput
+application/x-gzip              ; /bin/tar tfvz %s                              ; copiousoutput
+application/x-gzip-postscript   ; /bin/zcat %s /usr/X11R6/bin/gv                ; copiousoutput
+application/x-latex             ; cat %s                                        ; copiousoutput
+application/x-perl              ; cat %s                                        ; copiousoutput
+application/x-rar-compressed    ; rar v %s                                      ; copiousoutput
+application/x-script            ; cat %s                                        ; copiousoutput
+application/x-shar              ; cat %s                                        ; copiousoutput
+application/x-shellscript       ; cat %s                                        ; copiousoutput
+application/x-sh                ; cat %s                                        ; copiousoutput
+application/x-tar               ; /bin/tar tvvf %s                              ; copiousoutput
+application/x-tar-gz            ; /bin/tar tfvz %s                              ; copiousoutput
+application/x-tcl               ; cat %s                                        ; copiousoutput
+application/x-tex                ; cat %s                                        ; copiousoutput
+application/x-troff             ; groff -Tlatin1 %s                             ; copiousoutput
+application/x-troff-man         ; man -l %s 2>/dev/null                         ; copiousoutput
+application/x-troff-me          ; groff -me -Tlatin1 %s                         ; copiousoutput
+application/x-zip-compressed    ; unzip -v %s                                   ; copiousoutput
+application/zip                 ; unzip -v %s                                   ; copiousoutput
+audio/basic                     ; /usr/bin/xmms %s                              ; copiousoutput
+audio/midi                      ; /usr/bin/xmms %s                              ; copiousoutput
+audio/mpegurl                   ; /usr/bin/xmms %s                              ; copiousoutput
+audio/mpeg                      ; /usr/bin/xmms %s                              ; copiousoutput
+audio/x-midi                    ; /usr/bin/xmms %s                              ; copiousoutput
+audio/x-mod                     ; /usr/bin/xmms %s                              ; copiousoutput
+audio/x-pn-realaudio-plugin     ; /usr/bin/X11/realplay %s                      ; copiousoutput
+audio/x-pn-realaudio            ; /usr/bin/X11/realplay %s                      ; copiousoutput
+audio/x-wav                     ; /usr/bin/xmms %s                              ; copiousoutput
+image/x-eps                     ; gv %s                                         ; copiousoutput
+image/*                         ; /usr/bin/feh --scale-down %s;  test=test -n "$DISPLAY" ; copiousoutput
+text/comma-separated-values     ; cat %s                                        ; copiousoutput
+text/english                    ; cat %s                                        ; copiousoutput
+text/html                       ; /usr/bin/lynx -dump -force_html %s            ; copiousoutput
+text/plain                      ; cat %s                                        ; copiousoutput
+text/richtext                   ; /usr/bin/AbiWord %s                           ; copiousoutput
+text/tab-separated-values       ; cat %s                                        ; copiousoutput
+text/x-c++hdr                   ; cat %s                                        ; copiousoutput
+text/x-chdr                     ; cat %s                                        ; copiousoutput
+text/x-compress-html            ; /bin/zcat %s /usr/bin/lynx -dump -force_html  ; copiousoutput
+text/x-crontab                  ; cat %s                                        ; copiousoutput
+text/x-csh                      ; cat %s                                        ; copiousoutput
+text/x-c++src                   ; cat %s                                        ; copiousoutput
+text/x-csrc                     ; cat %s                                        ; copiousoutput
+text/x-gzip-html                ; /bin/zcat %s /usr/bin/lynx -dump -force_html  ; copiousoutput
+text/x-java                     ; cat %s                                        ; copiousoutput
+text/x-makefile                 ; cat %s                                        ; copiousoutput
+text/x-moc                      ; cat %s                                        ; copiousoutput
+text/x-pascal                   ; cat %s                                        ; copiousoutput
+text/x-setext                   ; cat %s                                        ; copiousoutput
+text/x-sgml                     ; cat %s                                        ; copiousoutput
+text/x-sh                       ; cat %s                                        ; copiousoutput
+text/x-tcl                      ; cat %s                                        ; copiousoutput
+text/x-tex                      ; cat %s                                        ; copiousoutput
+text/x-vCalendar                ; cat %s                                        ; copiousoutput
+text/x-vcard                    ; ~/mutt/mutt.vcard.filter %s                   ; copiousoutput
+video/mpeg                      ; mtv %s                                        ; copiousoutput
+
+# vim: set nowrap:

@@ -1,0 +1,11 @@
+### codeways setup 
+set folder=imaps://imap.codeways.org:993
+#set spoolfile=+INBOX 
+mailboxes "=INBOX"
+set postponed =+Drafts 
+set ssl_force_tls = yes 
+set realname="Chris Martel"
+set signature=~/.mutt/codeways-signature
+set from=chris@codeways.org
+set hostname=codeways.org
+
