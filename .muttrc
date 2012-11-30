@@ -1,93 +1,175 @@
-set imap_user = "christoph.martel@gmail.com"
-set imap_pass = "PASSWORD"
+#########################################################
+# Composing & sending
+#########################################################
+set signature="~/.signature"
+set editor="emacs -nw --no-splash"
+set quit
+set edit_headers
+set fast_reply
+unset reply_self
+set sendmail_wait=-1 # Don't wait around for sendmail.
+set copy		      #save copy of outgoing mail
+set hidden_host       # hide host details
+set query_command="goobook query '%s'"
 
-#set folder = "imaps://imap.gmail.com:993"
-set folder = "imaps://imap.googlemail.com:993"
-set spoolfile = "+INBOX"
-set postponed ="+[Gmail]/Entwürfe"
-#set trash = "imaps://imap.gmail.com/[Gmail]/Trash"
-#set smtp_url = smtps://christoph.martel@gmail.com:PASSWORD@smtp.gmail.com
-set smtp_url = smtps://christoph.martel@gmail.com:PASSWORD@smtp.googlemail.com
-set ssl_force_tls = yes
+# forwarding options for multipart messages
+set mime_forward
+set mime_forward_rest
 
+# HTML is last option
+alternative_order text/enriched text/plain text/html
+
+#########################################################
+# Display settings
+#########################################################
 set markers=no # don't put '+' at the beginning of wrapped lines
 set pager_index_lines= 5 # how large is the index window?
 set sort = 'threads'
 set sort_aux = 'reverse-last-date-received'
-
-bind editor <space> noop
-macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
-macro index ga "<change-folder>=[Gmail]/Alle Nachrichten<enter>" "Go to all mail"
-macro index gs "<change-folder>=[Gmail]/Gesendet<enter>" "Go to Sent Mail"
-macro index gd "<change-folder>=[Gmail]/Entwürfe<enter>" "Go to drafts"
-macro index gA "s=[Gmail]/Alle Nachrichten"
-macro index gS "s=[Gmail]/Markiert"
-# use urlview package
-macro index \cb |urlview\n
-macro pager \cb |urlview\n
-
-set move = no  #Stop asking to "move read messages to mbox"!
-set imap_keepalive = 900
-unset imap_passive
-
-set header_cache =~/.mutt/cache/headers
-set message_cachedir =~/.mutt/cache/bodies
-set certificate_file =~/.mutt/certificates
-
-set realname="Christoph Martel"
-set signature=~/.mutt/signature
-set from="christoph.martel@gmail.com"
-set hostname="gmail.com"
-set mail_check=60
-set editor="emacs -nw --no-splash"
-set quit=yes
-set edit_headers=no
-set fast_reply=yes
-set query_command="abook --mutt-query '%s'"
-auto_view application/octet-stream
-my_hdr X-PGP-Key: http://www.cmartel.de/res/pubkey.asc
-set copy=no		#save copy of outgoing mail
-set hidden_host       # hide host details
-
-# forwarding options for multipart messages
-set mime_forward=yes
-set mime_forward_rest=yes
-
 #set attribution="* %n <%a> [%{%Y-%m-%d %H:%M:%S %Z}]:\n"	# attrinution line
 set nomarkers 		# no wrapping markers
 set nobeep
-
-set index_format="%Z %d %-15.15L (%4l) %s"
+set index_format="%Z %d %-30.30L (%4l) %s"
 set date_format="!%a, %d %b %k:%M"
+#source ~/.mutt/themes/solarized/mutt-colors-solarized-dark-16.muttrc
+source ~/.mutt/themes/custom/default
 
-# gnupgg settings
-source ~/.mutt/gpg.rc
-set pgp_autosign=yes
-set pgp_autoencrypt=no
-set pgp_sign_as=0x299B221A
-set pgp_replyencrypt=yes
-set pgp_timeout=3600
-#set pgp_good_sign="^gpg: Good signature from"
-set pgp_replysign=yes
-set pgp_verify_sig=yes
-set pgp_strict_enc
-unset pgp_long_ids
-set pgp_auto_decode=yes
+#########################################################
+# GnuPG Settings
+#########################################################
+source ~/.mutt/gpg
+
+#########################################################
+# Configure header displays.
+#########################################################
+# Ignore all headers
+ignore *
+
+# Then un-ignore the ones we want to see
+unignore From:
+unignore To:
+unignore Reply-To:
+unignore Mail-Followup-To:
+unignore Subject:
+unignore Date:
+unignore Organization:
+unignore Newsgroups:
+unignore CC:
+unignore BCC:
+unignore Message-ID:
+unignore X-Mailer:
+unignore User-Agent:
+unignore X-Junked-Because:
+unignore X-SpamProbe:
+unignore X-Virus-hagbard:
+unignore X-Spam-Status
+unignore X-Grouchosity
+unignore X-Bogosity
+unignore X-PGP-Key
+
+# Sort order
+hdr_order From: Subject: To: CC: BCC: Reply-To: Mail-Followup-To: Date: Organization: User-Agent: X-Mailer: Message-Id: In-Reply-To: References: X-Spam-Status: X-Grouchosity: X-Bogosity: X-PGP-Key:
+
+# Also cache these ones
+set imap_headers="Message-ID In-Reply-To References X-Bogosity X-Spam-Status X-Grouchosity"
+
+# send extra headers
+#my_hdr X-PGP-Key: http://www.cmartel.de/res/pubkey.asc
+
+#########################################################
+# Account setup
+#########################################################
+### Alternates
+alternates "c.martel@gmx.net|christoph.martel@gmail.com|chris@codeways.org"
+set reverse_name=yes
+set reverse_realname=no
+
+### Folders
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/messages
+set certificate_file =~/.mutt/certificates
+set move = no  #Stop asking to "move read messages to mbox"!
+set my_mask=$mask
+# set mask="!^\.[^.]"
+
+### IMAP accounts
+account-hook imaps://imap.codeways.org:993 'set imap_user=chris'
+account-hook imaps://imap.codeways.org:993 'set imap_pass=`gpg2 -q -d --batch ~/.passwords/mutt/chris-cw.gpg`'
+account-hook imaps://imap.codeways.org:993 'set smtp_pass=`gpg2 -q -d --batch ~/.passwords/mutt/smtp-cw.gpg`'
+account-hook imaps://imap.codeways.org:993 'set smtp_url=smtps://chris@codeways.org@smtp.codeways.org'
+
+account-hook imaps://imap.googlemail.com:993 'set imap_user=christoph.martel@gmail.com'
+account-hook imaps://imap.googlemail.com:993 'set imap_pass=`gpg2 -d -q --batch ~/.passwords/mutt/cm-gmail.gpg`'
+account-hook imaps://imap.googlemail.com:993 'set smtp_pass=`gpg2 -d -q --batch ~/.passwords/mutt/smtp-gmail.gpg`'
+account-hook imaps://imap.googlemail.com:993 'set smtp_url=smtps://christoph.martel@gmail.com@smtp.googlemail.com''
+   
+
+#########################################################
+# Options
+#########################################################
+set beep_new
+
+#unset imap_passive
+set maildir_header_cache_verify=yes
+set maildir_trash=yes
+set imap_idle=yes 
+set mail_check=120
+set imap_keepalive=300
+set timeout=10
+unset imap_check_subscribed
 set alias_file=~/.mutt/aliases
 set mailcap_path=~/.mutt/mailcap:/usr/local/etc/mailcap:/etc/mailcap
-
-# source files
-source ~/.mutt/colors # define colors
-source ~/.mutt/aliases
-# HTML is last option
-alternative_order text/enriched text/plain text/html
-
-# show version number
-push <show-version>
+push <show-version> # show version number
+set hdrs=yes
 
 #print settings
 set print=ask-yes
 set print_command="enscript -B -Email -q --margins=72:72:50:36"
 set print_split=yes
 
-			  
+set markers=no # don't put '+' at the beginning of wrapped lines
+set pager_index_lines= 5 # how large is the index window?
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+
+#########################################################
+# Aliases
+#########################################################
+source ~/.mutt/aliases
+
+#########################################################
+# Macros
+#########################################################
+# use urlview package
+macro index \cb |urlview\n
+macro pager \cb |urlview\n
+
+bind editor <space> noop
+#macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+#macro index ga "<change-folder>=[Gmail]/Alle Nachrichten<enter>" "Go to all mail"
+#macro index gs "<change-folder>=[Gmail]/Gesendet<enter>" "Go to Sent Mail"
+#macro index gd "<change-folder>=[Gmail]/Entwürfe<enter>" "Go to drafts"
+#macro index gA "s=[Gmail]/Alle Nachrichten"
+#macro index gS "s=[Gmail]/Markiert"
+#macro index gi '<sync-mailbox><enter-command>source ~/.mutt/gmail.rc<enter><change-folder>!<enter>'
+#macro index hi '<sync-mailbox><enter-command>source ~/.mutt/codeways.rcc<enter><change-folder>=imaps://imap.codeways.org:993<enter>'
+
+#########################################################
+# Folders
+#########################################################
+set folder="imaps://imap.googlemail.com:993"
+mailboxes "=INBOX"
+mailboxes "=Sent"
+mailboxes "=Drafts"
+mailboxes "=Trash"
+set spoolfile = "+INBOX"
+set postponed ="+[Gmail]/Entwürfe"
+unset from
+my_hdr From: Christoph Martel <christoph.martel@gmail.com>
+
+set folder="imaps://imap.codeways.org:993"
+mailboxes "=INBOX"
+mailboxes "=Sent"
+mailboxes "=Drafts"
+mailboxes "=Trash"
+

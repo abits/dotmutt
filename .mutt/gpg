@@ -79,7 +79,19 @@ set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --l
 
 # OK, here's a version which uses gnupg's message catalog:
 # set pgp_good_sign="`gettext -d gnupg -s 'Good signature from "' | tr -d '"'`"
+# set pgp_good_sign="^gpg: Good signature from"
 
 # This version uses --status-fd messages
 set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
+
+set pgp_autosign
+unset pgp_autoencrypt
+set pgp_sign_as=0x299B221A
+set pgp_replyencrypt
+set pgp_timeout=3600
+set pgp_replysign
+set pgp_verify_sig
+set pgp_strict_enc
+unset pgp_long_ids
+set pgp_auto_decode
 
