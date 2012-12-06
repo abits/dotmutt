@@ -2,7 +2,7 @@
 # Composing & sending
 #########################################################
 set signature="~/.signature"
-set editor="emacs -nw --no-splash"
+set editor="emacs -nw --no-splash -bg black"
 set quit
 set edit_headers
 set fast_reply
@@ -18,6 +18,10 @@ set mime_forward_rest
 
 # HTML is last option
 alternative_order text/enriched text/plain text/html
+
+set sendmail="/bin/msmtp"
+set use_from=yes
+set envelope_from=yes
 
 #########################################################
 # Display settings
@@ -43,6 +47,7 @@ source ~/.mutt/gpg
 # Configure header displays.
 #########################################################
 # Ignore all headers
+
 ignore *
 
 # Then un-ignore the ones we want to see
@@ -80,7 +85,7 @@ set imap_headers="Message-ID In-Reply-To References X-Bogosity X-Spam-Status X-G
 # Account setup
 #########################################################
 ### Alternates
-alternates "c.martel@gmx.net|christoph.martel@gmail.com|chris@codeways.org"
+#alternates "c.martel@gmx.net|christoph.martel@gmail.com|chris@codeways.org"
 set reverse_name=yes
 set reverse_realname=no
 
@@ -93,16 +98,11 @@ set my_mask=$mask
 # set mask="!^\.[^.]"
 
 ### IMAP accounts
-account-hook imaps://imap.codeways.org:993 'set imap_user=chris'
-account-hook imaps://imap.codeways.org:993 'set imap_pass=`gpg2 -q -d --batch ~/.passwords/mutt/chris-cw.gpg`'
-account-hook imaps://imap.codeways.org:993 'set smtp_pass=`gpg2 -q -d --batch ~/.passwords/mutt/smtp-cw.gpg`'
-account-hook imaps://imap.codeways.org:993 'set smtp_url=smtps://chris@codeways.org@smtp.codeways.org'
+account-hook imaps://imap.codeways.org 'set imap_user=chris'
+account-hook imaps://imap.codeways.org 'set imap_pass=`gpg2 -q -d --batch ~/.passwords/chris-cw.gpg`'
 
 account-hook imaps://imap.googlemail.com:993 'set imap_user=christoph.martel@gmail.com'
-account-hook imaps://imap.googlemail.com:993 'set imap_pass=`gpg2 -d -q --batch ~/.passwords/mutt/cm-gmail.gpg`'
-account-hook imaps://imap.googlemail.com:993 'set smtp_pass=`gpg2 -d -q --batch ~/.passwords/mutt/smtp-gmail.gpg`'
-account-hook imaps://imap.googlemail.com:993 'set smtp_url=smtps://christoph.martel@gmail.com@smtp.googlemail.com''
-   
+account-hook imaps://imap.googlemail.com:993 'set imap_pass=`gpg2 -d -q --batch ~/.passwords/cm-gmail.gpg`'
 
 #########################################################
 # Options
@@ -157,19 +157,33 @@ bind editor <space> noop
 #########################################################
 # Folders
 #########################################################
+set folder="imaps://imap.codeways.org"
+mailboxes "+INBOX"
+mailboxes "+Sent"
+mailboxes "+Drafts"
+mailboxes "+Trash"
 set folder="imaps://imap.googlemail.com:993"
-mailboxes "=INBOX"
-mailboxes "=Sent"
-mailboxes "=Drafts"
-mailboxes "=Trash"
+mailboxes "+INBOX"
+mailboxes "+[Gmail]/Gesendet"
+mailboxes "+[Gmail]/Entwürfe"
+mailboxes "+Trash"
 set spoolfile = "+INBOX"
-set postponed ="+[Gmail]/Entwürfe"
-unset from
-my_hdr From: Christoph Martel <christoph.martel@gmail.com>
 
-set folder="imaps://imap.codeways.org:993"
-mailboxes "=INBOX"
-mailboxes "=Sent"
-mailboxes "=Drafts"
-mailboxes "=Trash"
+folder-hook .*googlemail.* 'set from=christoph.martel@gmail.com'
+folder-hook .*googlemail.* 'set sendmail="msmtp -a gmail"'
+folder-hook .*googlemail.* 'set mbox="+[Gmail]/Alle Nachrichten"'
+folder-hook .*googlemail.* 'unset record'
+folder-hook .*googlemail.* 'set move'
+folder-hook .*googlemail.* 'set realname="Christoph Martel"'
+folder-hook .*googlemail.* 'set signature="~/mutt/gmail.signature"'
+folder-hook .*googlemail.* 'set postponed="+[Gmail]/Entwürfe"'
 
+folder-hook .*codeways.* 'set from=christoph.martel@gmail.com'
+folder-hook .*codeways.* 'set sendmail="msmtp -a codeways"'
+folder-hook .*codeways.* 'set from=chris@codeways.org'
+folder-hook .*codeways.* 'set record=+Sent'
+folder-hook .*codeways.* 'unset move'
+folder-hook .*codeways.* 'set realname="Chris Martel"'
+folder-hook .*codeways.* 'set hostname="codeways.org"'
+folder-hook .*codeways.* 'set signature="~/.mutt/codeways.signature"'
+folder-hook .*codeways.* 'set signature="~/.mutt/codeways.signature"'
